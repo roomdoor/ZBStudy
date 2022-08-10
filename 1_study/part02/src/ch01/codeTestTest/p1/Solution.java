@@ -1,6 +1,7 @@
 package ch01.codeTestTest.p1;
 
 public class Solution {
+
     public int solution(int n, int m) {
         int answer = 0;
 
