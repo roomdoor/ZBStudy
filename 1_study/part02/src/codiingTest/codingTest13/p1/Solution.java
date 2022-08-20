@@ -34,15 +34,15 @@ public class Solution {
                     break;
 
                 case '-':                       // 마이너스가 나왔을 때
-                    if (!numberStarted) {       // 숫자가 시작 되지 안았다면 음수값을 표시해줌
-                        isMinus = !isMinus;
-                    } else {                    // 숫자가 나온 이후라면 문자 취급하므로 지금까지 모인 숫자를 리턴
+                    if (numberStarted) {       // 숫자가 시작 되지 안았다면 음수값을 표시해줌
                         return isMinus ? (int) -clippingChecked : (int) clippingChecked;
+                    } else {                    // 숫자가 나온 이후라면 문자 취급하므로 지금까지 모인 숫자를 리턴
+                        isMinus = !isMinus;
                     }
                     break;
                 case ' ':
                 case '+':                       // 마이너스부호처리와 똑같이 숫자가 시작되었다면 숫자 리턴
-                    if (!numberStarted) {
+                    if (numberStarted) {
                         return isMinus ? (int) -clippingChecked : (int) clippingChecked;
                     }
                     break;
@@ -56,6 +56,6 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        System.out.println(solution("00000010++1"));
+        System.out.println(solution(" - 1"));
     }
 }

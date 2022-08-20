@@ -208,6 +208,7 @@ public class Solution {
 
                         if (zeroCount == 0) {           // 0 인 부분이 하나도 없다면 꽉찬 라인
                             removeFullLineAndAddPoint(j);   // 꽉찬 라인 지우고 점수 더하고 없어진 줄 위쪽을 아래로 내림
+                            j++;
                         }
 
                         if (zeroCount == 10) {          // 모두 0이라면 그 위는 없으므로 for 문 탈출 (최적화)
@@ -297,8 +298,8 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        int[] a = new int[]{1, 3, 6, 2, 4, 7, 4, 5, 3};
-        String s = "uulduuuldurrrrrdrrurrrrrduulldrrrldrdrlrrruudurrrrd";
+        int[] a = new int[]{7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7};
+        String s = "ldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrdldlrrdlrrrrdlrrrrrrdlrrrrrrrrd";
         System.out.println(solution(a, s));
     }
 }
