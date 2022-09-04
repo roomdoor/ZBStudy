@@ -22,6 +22,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class DiaryService {
     private final JpaDiaryRepository diaryRepository;
 
@@ -94,6 +95,7 @@ public class DiaryService {
         return resultMap;
     }
 
+    @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
         return diaryRepository.findAllByDate(date);
     }
