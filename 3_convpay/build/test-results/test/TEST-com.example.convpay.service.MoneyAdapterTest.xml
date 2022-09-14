@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.example.convpay.service.MoneyAdapterTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2022-09-12T06:27:38" hostname="isihwaui-MacBookAir.local" time="0.003">
+  <properties/>
+  <testcase name="1. moneyAdepter.use FAIL" classname="com.example.convpay.service.MoneyAdapterTest" time="0.0"/>
+  <testcase name="2. moneyAdepter.use SUCCESS" classname="com.example.convpay.service.MoneyAdapterTest" time="0.001"/>
+  <testcase name="3. moneyAdepter.useCancel SUCCESS" classname="com.example.convpay.service.MoneyAdapterTest" time="0.0"/>
+  <testcase name="4. moneyAdepter.useCancel FAIL" classname="com.example.convpay.service.MoneyAdapterTest" time="0.0"/>
+  <system-out><![CDATA[MoneyAdapter.use : 1000001
+MoneyAdapter.use : 1000000
+MoneyAdapter.useCancel : 100
+MoneyAdapter.useCancel : 99
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
