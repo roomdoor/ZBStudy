@@ -20,3 +20,8 @@ spring:
     url: jdbc:h2:mem:b27e6460-479f-4b15-a2a5-4ef8601536e1
     username: dividend
     password:
+
+
+scheduler:
+  scrap:
+    yahoo: 0 0 0 * * *
