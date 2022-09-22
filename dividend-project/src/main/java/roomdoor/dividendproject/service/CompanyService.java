@@ -3,7 +3,9 @@ package roomdoor.dividendproject.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -23,6 +25,7 @@ public class CompanyService {
 	private final CompanyRepository companyRepository;
 	private final DividendRepository dividendRepository;
 
+	private final Trie trie;
 
 
 	public Company save(String ticker) {
@@ -59,4 +62,25 @@ public class CompanyService {
 		return companyRepository.findAll(pageable);
 	}
 
+	public void addAutoCompleteKeyword(String keyword) {
+		trie.put(keyword, null);
+	}
+
+	public List<String> autoComplete(String keyword) {
+		return (List<String>) trie.prefixMap(keyword).keySet().stream()
+			.collect(Collectors.toList());
+	}
+
+	public void deleteAutoCompleteKeyword(String keyword) {
+		trie.remove(keyword);
+	}
+
+	public List<String> getCompanyNamesByKeyword(String keyword) {
+		Pageable limit = PageRequest.of(0, 10);
+		Page<CompanyEntity> companyEntities = companyRepository.findByNameStartingWithIgnoreCase(
+			keyword, limit);
+
+		return companyEntities.stream().map(CompanyEntity::getName)
+			.collect(Collectors.toList());
+	}
 }

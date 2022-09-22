@@ -80,6 +80,9 @@ public class YahooFinanceScraper implements FinanceScraper{
 			Document document = connect.get();
 			Element titleElement = document.getElementsByClass("D(ib) Fz(18px)").get(0);
 			String title = titleElement.text().split("\\(")[0].trim();
+			if (title.isEmpty()) {
+				throw new RuntimeException("title is empty");
+			}
 
 			result.setName(title);
 

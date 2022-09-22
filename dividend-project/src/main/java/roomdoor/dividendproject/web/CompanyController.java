@@ -1,19 +1,16 @@
 package roomdoor.dividendproject.web;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import roomdoor.dividendproject.entity.CompanyEntity;
 import roomdoor.dividendproject.model.Company;
 import roomdoor.dividendproject.service.CompanyService;
 
@@ -26,7 +23,10 @@ public class CompanyController {
 
 	@GetMapping("/autocomplete")
 	public ResponseEntity<?> autoComplete(@RequestParam String keyword) {
-		return null;
+//		var result = companyService.autoComplete(keyword);
+		var result = companyService.getCompanyNamesByKeyword(keyword);
+
+		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping("")
@@ -43,6 +43,7 @@ public class CompanyController {
 		}
 
 		Company save = companyService.save(ticker);
+		companyService.addAutoCompleteKeyword(save.getName());
 
 		return ResponseEntity.ok(save);
 	}
