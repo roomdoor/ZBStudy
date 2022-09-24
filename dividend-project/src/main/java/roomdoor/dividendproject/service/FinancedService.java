@@ -3,12 +3,14 @@ package roomdoor.dividendproject.service;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import roomdoor.dividendproject.entity.CompanyEntity;
 import roomdoor.dividendproject.entity.DividendEntity;
 import roomdoor.dividendproject.model.Company;
 import roomdoor.dividendproject.model.Dividend;
 import roomdoor.dividendproject.model.ScrapedResult;
+import roomdoor.dividendproject.model.constants.CacheKey;
 import roomdoor.dividendproject.repository.CompanyRepository;
 import roomdoor.dividendproject.repository.DividendRepository;
 
@@ -20,6 +22,7 @@ public class FinancedService {
 
 	private final CompanyRepository companyRepository;
 
+	@Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
 	public ScrapedResult getDividendByCompanyName(String companyName) {
 		CompanyEntity companyEntity = companyRepository.findByName(companyName)
 			.orElseThrow(() -> new RuntimeException("not exist company name -> " + companyName));
