@@ -83,4 +83,15 @@ public class CompanyService {
 		return companyEntities.stream().map(CompanyEntity::getName)
 			.collect(Collectors.toList());
 	}
+
+	public String deleteCompany(String ticker) {
+		CompanyEntity company = companyRepository.findByTicker(ticker)
+			.orElseThrow(() -> new RuntimeException("not found company"));
+
+		dividendRepository.deleteAllByCompanyId(company.getId());
+		companyRepository.delete(company);
+		deleteAutoCompleteKeyword(company.getName());
+
+		return company.getName();
+	}
 }
