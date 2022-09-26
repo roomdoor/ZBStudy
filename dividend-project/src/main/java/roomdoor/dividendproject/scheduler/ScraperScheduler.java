@@ -43,10 +43,11 @@ public class ScraperScheduler {
 			scrapedResult.getDividendEntities().stream()
 				.map(e -> new DividendEntity(company.getId(), e))
 				.forEach(e -> {
-					boolean exists = dividendRepository.existsByCompanyIdAndDate
-						(e.getCompanyId(), e.getDate());
-					if (exists) {
+					boolean exists = dividendRepository.existsByCompanyIdAndDate(e.getCompanyId(),
+						e.getDate());
+					if (!exists) {
 						dividendRepository.save(e);
+						log.info("insert new dividend ->" + e.toString());
 					}
 				});
 

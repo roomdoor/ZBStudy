@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import roomdoor.dividendproject.entity.CompanyEntity;
 import roomdoor.dividendproject.entity.DividendEntity;
+import roomdoor.dividendproject.exception.impl.AlreadyExistCompanyException;
+import roomdoor.dividendproject.exception.impl.FailToScrapException;
+import roomdoor.dividendproject.exception.impl.NoCompanyException;
 import roomdoor.dividendproject.model.Company;
 import roomdoor.dividendproject.model.ScrapedResult;
 import roomdoor.dividendproject.repository.CompanyRepository;
@@ -32,7 +35,7 @@ public class CompanyService {
 		boolean exist = companyRepository.existsByTicker(ticker);
 
 		if (exist) {
-			throw new RuntimeException("already exist ticker ->" + ticker);
+			throw new AlreadyExistCompanyException();
 		}
 
 		return storeCompanyAndDividend(ticker);
@@ -42,7 +45,7 @@ public class CompanyService {
 		Company company = yahooFinanceScraper.scrapCompanyByTicker(ticker);
 
 		if (ObjectUtils.isEmpty(company)) {
-			throw new RuntimeException("fail to scrap ticker -> " + ticker);
+			throw new FailToScrapException();
 		}
 
 		ScrapedResult scrapedResult = yahooFinanceScraper.scrap(company);
@@ -86,7 +89,7 @@ public class CompanyService {
 
 	public String deleteCompany(String ticker) {
 		CompanyEntity company = companyRepository.findByTicker(ticker)
-			.orElseThrow(() -> new RuntimeException("not found company"));
+			.orElseThrow(NoCompanyException::new);
 
 		dividendRepository.deleteAllByCompanyId(company.getId());
 		companyRepository.delete(company);

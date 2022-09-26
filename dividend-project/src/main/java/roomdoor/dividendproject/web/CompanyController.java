@@ -1,6 +1,7 @@
 package roomdoor.dividendproject.web;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import roomdoor.dividendproject.model.Company;
 import roomdoor.dividendproject.model.constants.CacheKey;
 import roomdoor.dividendproject.service.CompanyService;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/company")
@@ -38,6 +40,7 @@ public class CompanyController {
 	@GetMapping("")
 	@PreAuthorize("hasRole('READ')")
 	public ResponseEntity<?> searchCompany(final Pageable pageable) {
+		log.info("search company");
 		return ResponseEntity.ok(companyService.list(pageable));
 	}
 
@@ -52,7 +55,7 @@ public class CompanyController {
 
 		Company save = companyService.save(ticker);
 		companyService.addAutoCompleteKeyword(save.getName());
-
+		log.info("add company");
 		return ResponseEntity.ok(save);
 	}
 
@@ -61,6 +64,7 @@ public class CompanyController {
 	public ResponseEntity<?> deleteCompany(@PathVariable String ticker) {
 		String companyName = companyService.deleteCompany(ticker);
 		clearFinanceCache(companyName);
+		log.info("delete company");
 		return ResponseEntity.ok(companyName);
 	}
 

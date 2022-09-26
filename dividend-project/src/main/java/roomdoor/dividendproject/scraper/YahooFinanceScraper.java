@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,6 +16,7 @@ import roomdoor.dividendproject.model.Dividend;
 import roomdoor.dividendproject.model.ScrapedResult;
 import roomdoor.dividendproject.model.constants.Month;
 
+@Slf4j
 @Component
 public class YahooFinanceScraper implements FinanceScraper{
 
@@ -63,6 +65,8 @@ public class YahooFinanceScraper implements FinanceScraper{
 			}
 
 			scrapedResult.setDividendEntities(dividends);
+
+			log.info("scrap company -> " + company.getTicker() + " " + company.getName());
 			return scrapedResult;
 		} catch (IOException e) {
 			e.printStackTrace();

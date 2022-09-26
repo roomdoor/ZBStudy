@@ -7,6 +7,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import roomdoor.dividendproject.entity.CompanyEntity;
 import roomdoor.dividendproject.entity.DividendEntity;
+import roomdoor.dividendproject.exception.impl.NoCompanyException;
 import roomdoor.dividendproject.model.Company;
 import roomdoor.dividendproject.model.Dividend;
 import roomdoor.dividendproject.model.ScrapedResult;
@@ -25,7 +26,7 @@ public class FinancedService {
 	@Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
 	public ScrapedResult getDividendByCompanyName(String companyName) {
 		CompanyEntity companyEntity = companyRepository.findByName(companyName)
-			.orElseThrow(() -> new RuntimeException("not exist company name -> " + companyName));
+			.orElseThrow(NoCompanyException::new);
 
 		List<DividendEntity> dividendEntities = dividendRepository
 			.findALlByCompanyId(companyEntity.getId());

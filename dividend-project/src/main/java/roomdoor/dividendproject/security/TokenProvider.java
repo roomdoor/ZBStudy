@@ -44,7 +44,7 @@ public class TokenProvider {
 			.compact();
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public Authentication getAuthentication(String jwt) {
 		UserDetails userDetails = memberService.loadUserByUsername(this.getUsername(jwt));
 
@@ -53,7 +53,8 @@ public class TokenProvider {
 	}
 
 	public String getUsername(String token) {
-		return this.parseClaims(token).getSubject();
+		String subject = this.parseClaims(token).getSubject();
+		return subject;
 	}
 
 	public boolean validateToken(String token) {

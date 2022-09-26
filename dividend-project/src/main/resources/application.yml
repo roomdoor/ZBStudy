@@ -7,9 +7,9 @@ spring:
     open-in-view: true
     defer-datasource-initialization: true
     show_sql: true
-    properties:
-      hibernate:
-        format_sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
 
   h2:
     console:

@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import roomdoor.dividendproject.exception.impl.AlreadyExistUserException;
+import roomdoor.dividendproject.exception.impl.NotFoundIdException;
+import roomdoor.dividendproject.exception.impl.PasswordMismatchException;
 import roomdoor.dividendproject.model.MemberEntity;
 import roomdoor.dividendproject.model.constants.Auth;
 import roomdoor.dividendproject.repository.MemberRepository;
@@ -33,22 +36,20 @@ public class MemberService implements UserDetailsService {
 	public MemberEntity register(Auth.SignUp member) {
 		boolean exists = memberRepository.existsByUsername(member.getUsername());
 		if (exists) {
-			throw new RemoteTimeoutException("이미 사용 중인 아이디 입니다.");
+			throw new AlreadyExistUserException();
 		}
-
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		log.info("register -> " + member.getUsername());
 		return memberRepository.save(member.toEntity());
 	}
 
 	public MemberEntity authenticate(Auth.SignIn member) {
 		MemberEntity user = memberRepository.findByUsername(member.getUsername())
-			.orElseThrow(() -> new RuntimeException("not found Id"));
+			.orElseThrow(NotFoundIdException::new);
 
 		if (passwordEncoder.matches(user.getPassword(), member.getPassword())) {
-			throw new RuntimeException("not match password");
+			throw new PasswordMismatchException();
 		}
-
-		user.setRoles(user.getRoles());
 
 		return user;
 	}
