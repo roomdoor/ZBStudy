@@ -1,6 +1,5 @@
 package roomdoor.dividendproject.web;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import roomdoor.dividendproject.model.MemberEntity;
+import roomdoor.dividendproject.entity.MemberEntity;
 import roomdoor.dividendproject.model.constants.Auth;
 import roomdoor.dividendproject.security.TokenProvider;
 import roomdoor.dividendproject.service.MemberService;

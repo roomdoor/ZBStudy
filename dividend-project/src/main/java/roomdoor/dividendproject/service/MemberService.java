@@ -3,7 +3,6 @@ package roomdoor.dividendproject.service;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.remoting.RemoteTimeoutException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 import roomdoor.dividendproject.exception.impl.AlreadyExistUserException;
 import roomdoor.dividendproject.exception.impl.NotFoundIdException;
 import roomdoor.dividendproject.exception.impl.PasswordMismatchException;
-import roomdoor.dividendproject.model.MemberEntity;
+import roomdoor.dividendproject.entity.MemberEntity;
 import roomdoor.dividendproject.model.constants.Auth;
 import roomdoor.dividendproject.repository.MemberRepository;
 

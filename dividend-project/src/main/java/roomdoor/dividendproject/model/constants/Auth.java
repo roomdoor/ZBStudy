@@ -2,7 +2,7 @@ package roomdoor.dividendproject.model.constants;
 
 import java.util.List;
 import lombok.*;
-import roomdoor.dividendproject.model.MemberEntity;
+import roomdoor.dividendproject.entity.MemberEntity;
 
 
 public class Auth {

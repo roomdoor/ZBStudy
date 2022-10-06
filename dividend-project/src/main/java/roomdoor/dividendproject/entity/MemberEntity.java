@@ -1,4 +1,4 @@
-package roomdoor.dividendproject.model;
+package roomdoor.dividendproject.entity;
 
 import java.util.Collection;
 import java.util.List;
