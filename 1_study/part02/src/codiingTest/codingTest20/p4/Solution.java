@@ -4,88 +4,87 @@ package codiingTest.codingTest20.p4;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.Objects;
 
 public class Solution {
 
-	public static List<Set<String>> nDP = new ArrayList<>();
+	protected static List<Integer> halfNum;
+	protected static List<String> answer;
+	protected static int N;
+	protected static int H;
+	protected static Map<Integer, Integer> map = Map.of(
+		0, 0,
+		1, 1,
+		8, 8,
+		6, 9,
+		9, 6);
 
 	public static String[] solution(int n) {
-		nDP.add(new HashSet<>());
-		Set<String> n1 = new HashSet<>();
-		n1.add("0");
-		n1.add("1");
-		n1.add("8");
-		nDP.add(n1);
-		n1 = new HashSet<>();
-		n1.add("11");
-		n1.add("69");
-		n1.add("88");
-		n1.add("96");
-		nDP.add(n1);
+		N = n;
+		H = (n + 1) / 2;
 
-		for (int i = 0; i < 13; i++) {
-			nDP.add(new HashSet<>());
-		}
+		halfNum = new ArrayList<>();
+		answer = new ArrayList<>();
 
-		if (n == 1 || n == 2) {
-			List<String> sser = new ArrayList<>(nDP.get(n));
-			Collections.sort(sser);
-			return sser.toArray(String[]::new);
-		}
-		List<String> dfs = new ArrayList<>(dfs(n));
-		Collections.sort(dfs);
-
-		return dfs.toArray(String[]::new);
-	}
-
-	public static List<String> dfs(int n) {
-		if (n == 1 || n == 2) {
-			return new ArrayList<>(nDP.get(n));
-		}
-
-		if (n % 2 == 0) {
-			Set<String> strings = nDP.get(n);
-			List<String> halfList = nDP.get(n / 2).stream().toList();
-			for (String item : halfList) {
-				strings.add(item + item);
-			}
-			List<String> listMinus2 = nDP.get(n - 2).stream().toList();
-			List<String> list2 = nDP.get(2).stream().toList();
-			for (String value : list2) {
-				for (String s : listMinus2) {
-					strings.add(sumString(s, value));
-					strings.add(sumString(value, s));
+		if (n == 1) {
+			for (Integer a : map.keySet()) {
+				if (a.equals(map.get(a))) {
+					halfNum.add(a);
 				}
 			}
-
-		} else {
-			Set<String> strings = nDP.get(n);
-			List<String> listMinus2 = nDP.get(n - 2).stream().toList();
-			List<String> list2 = nDP.get(2).stream().toList();
-			for (String value : list2) {
-				for (String s : listMinus2) {
-					String add1 = sumString(s, value);
-					strings.add(add1);
-
-					String add2 = sumString(value, s);
-					if (!add2.startsWith("0")) {
-						strings.add(add2);
-					}
-				}
-			}
+			return halfNum.stream().sorted().map(Objects::toString).toArray(String[]::new);
 		}
 
-		return nDP.get(n).stream().toList();
+		makeHalfNum();
+
+		return answer.stream().sorted().toArray(String[]::new);
 	}
 
-	public static String sumString(String a, String b) {
-		String substring1 = a.substring(a.length() / 2);
-		String substring2 = a.substring(0, a.length() / 2);
+	public static void makeHalfNum() {
+		if (halfNum.size() == H) {
+			addAnswer();
+			return;
+		}
 
-		return substring1 + b + substring2;
+		for (Integer a : map.keySet()) {
+			halfNum.add(a);
+
+			if (isPossible()) {
+				makeHalfNum();
+			}
+
+			halfNum.remove(halfNum.size() - 1);
+		}
+	}
+
+	private static boolean isPossible() {
+		if (halfNum.get(0) == 0) {
+			return false;
+		}
+
+		return N % 2 != 1 ||
+			halfNum.size() != H ||
+			halfNum.get(halfNum.size() - 1).equals(map.get(halfNum.get(halfNum.size() - 1)));
+	}
+
+	public static void addAnswer() {
+		List<Integer> reverseHalfNum = new ArrayList<>(halfNum);
+		Collections.reverse(reverseHalfNum);
+
+		if (N % 2 == 1) {
+			reverseHalfNum.remove(0);
+		}
+		StringBuilder result = new StringBuilder();
+		for (Integer a : halfNum) {
+			result.append(a);
+		}
+		for (Integer a : reverseHalfNum) {
+			result.append(a);
+		}
+
+		answer.add(result.toString());
 	}
 
 	public static void main(String[] args) {
@@ -95,30 +94,3 @@ public class Solution {
 		System.out.println(Arrays.toString(solution(4)));
 	}
 }
-
-// n = 1 ->	{"0", "1", "8"},
-
-// n = 2 ->	{"11", "69", "88", "96"},
-
-// n = 3 -> n1 * n2   {"101", "111", "181",
-// 						"609", "619", "689",
-// 						"808", "818", "888",
-// 						"906", "916", "986"}
-
-// n = 4 -> n2 * n2   {"1111", "1691", "1881", "1961",
-// 						"6119", "6699", "6889", "6969",
-// 						"8118", "8698", "8888", "8968",
-// 						"9116", "9696", "9886", "9966",
-// 						}
-
-// n = 5 -> n3 * n2
-
-// n = 6 -> n4 * n2 + n3 * n3
-
-// n = 7 -> n6 * n1 + n5 * n2 + n4 * n3
-
-
-
-
-
-
