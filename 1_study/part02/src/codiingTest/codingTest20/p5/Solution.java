@@ -1,97 +1,98 @@
 package codiingTest.codingTest20.p5;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Solution {
 
-	public static Map<String, Set<String>> similarSet;
+	public static int[] union;
 
 	public static int solution(String s, String t, String[][] similarWords) {
-		int answer = 0;
-		similarSet = new HashMap<>();
+		List<String> words = Arrays.stream(similarWords).flatMap(Arrays::stream)
+			.collect(Collectors.toSet()).stream()
+			.toList();
 
-		for (String[] similarWord : similarWords) {
-			if (!similarSet.containsKey(similarWord[0])) {
-				Set<String> list = new HashSet<>();
-				list.add(similarWord[1]);
-				similarSet.put(similarWord[0], list);
-			} else {
-				Set<String> list = similarSet.get(similarWord[0]);
-				list.add(similarWord[1]);
-				similarSet.put(similarWord[1], list);
-			}
+		Map<String, Integer> similarMap = new HashMap<>();
 
-			if (!similarSet.containsKey(similarWord[1])) {
-				Set<String> list = new HashSet<>();
-				list.add(similarWord[0]);
-				similarSet.put(similarWord[1], list);
+		for (int i = 0; i < words.size(); i++) {
+			similarMap.put(words.get(i), i);
+		}
+
+		union = new int[words.size()];
+		for (int i = 0; i < union.length; i++) {
+			union[i] = i;
+		}
+
+		for (int i = 0; i < similarWords.length; i++) {
+
+			int a = find(similarMap.get(similarWords[i][0]));
+			int b = find(similarMap.get(similarWords[i][1]));
+
+			if (a > b) {
+				union[a] = b;
 			} else {
-				Set<String> list = similarSet.get(similarWord[1]);
-				list.add(similarWord[0]);
-				similarSet.put(similarWord[0], list);
+				union[b] = a;
 			}
 		}
 
-		String[] sWords = s.split(" ");
-		String[] tWords = t.split(" ");
+		String[] sArr = s.split(" ");
+		String[] tArr = t.split(" ");
 
-		for (int i = 0; i < sWords.length; i++) {
-			if (isSimilar(sWords[i], tWords[i], false, "")) {
+		int answer = 0;
+		for (int i = 0; i < sArr.length; i++) {
+			if (similarMap.containsKey(sArr[i]) && similarMap.containsKey(tArr[i]) &&
+				find(similarMap.get(sArr[i])) == find(similarMap.get(tArr[i]))) {
+				answer++;
+			} else if (sArr[i].equals(tArr[i])) {
 				answer++;
 			}
 		}
+
 		return answer;
 	}
 
-	public static boolean isSimilar(String sWord, String tWord, boolean changed, String before) {
-		if (similarSet.containsKey(sWord)) {
-			if (similarSet.get(sWord).contains(tWord)) {
-				return true;
-			} else {
-				for (String sWordValue : similarSet.get(sWord)) {
-					if (similarSet.containsKey(sWordValue) && !sWordValue.equals(before)) {
-						return isSimilar(sWordValue, tWord, false, sWord);
-					}
-				}
-			}
-
-		} else if (similarSet.containsKey(tWord) && !changed) {
-			isSimilar(tWord, sWord, true, "");
+	public static int find(int x) {
+		if (union[x] == x) {
+			return x;
+		} else {
+			return find(union[x]);
 		}
-		return false;
 	}
 
-	public static void main(String[] args) {
-		String s = "zerobase is awesome";
-		String t = "courses are great";
-		String[][] ss = new String[][]{
-			{"zerobase", "courses"},
-			{"is", "am"},
-			{"are", "am"},
-			{"awesome", "fine"},
-			{"fine", "great"}};
-//		System.out.println(solution(s, t, ss));
 
-		s = "zerobase is awesome";
-		t = "games are fine";
-		ss = new String[][]{
-			{"zerobase", "courses"},
-			{"is", "am"},
-			{"are", "am"},
-			{"awesome", "fine"},
-			{"fine", "great"}};
+	public static void main(String[] args) {
+		String s = "you are reading this";
+		String t = "i am writing that";
+		String[][] ss = new String[][]{{"you", "he"}, {"he", "i"}, {"are", "is"}, {"is", "has"},
+			{"has", "am"}, {"reading", "watching"}, {"this", "that"}, {"that", "those"}};
 		System.out.println(solution(s, t, ss));
 
-		s = "1 2";
-		t = "9 10";
-		ss = new String[][]{{"1", "3"}, {"4", "3"}, {"4", "9"}};
+		s = "algorithm study should be done at once";
+		t = "datastructure lecture must be done this easy";
+		ss = new String[][]{{"algorithm", "lecture"}, {"datastructure", "done"}, {"should", "must"},
+			{"study", "datastructure"}};
+		System.out.println(solution(s, t, ss));
+
+		s = "what if there are two similar sentences";
+		t = "what if there are two similar sentences";
+		ss = new String[][]{{"one", "two"}};
+		System.out.println(solution(s, t, ss));
+
+
+		s = "what if there are two similar sentences";
+		t = "sentences similar two are there if what";
+		ss = new String[][]{{"what", "sentences"}, {"if", "similar"}, {"there", "two"}};
+		System.out.println(solution(s, t, ss));
+
+
+		s =   "this is fun";
+		t = "i am god";
+		ss = new String[][]{{"this", "fun"}, {"is", "is"}, {"am", "am"}, {"god", "am"}, {"god", "i"}};
 		System.out.println(solution(s, t, ss));
 	}
 }
-// 13 31
-// 13 43 34
-// 13 49 34 94
+// 3, 3, 7, 7, 0
